@@ -171,24 +171,28 @@ export default class Bar {
 
     bind() {
         if (this.invalid) return;
+        this.setup_popup_event();
         this.setup_click_event();
     }
 
-    setup_click_event() {
-        $.on(this.group, 'focus ' + this.gantt.options.popup_trigger, e => {
+    setup_popup_event() {
+        $.on(this.group, this.gantt.options.popup_trigger, e => {
             if (this.action_completed) {
                 // just finished a move action, wait for a few seconds
                 return;
-            }
-
-            if (e.type === 'click') {
-                this.gantt.trigger_event('click', [this.task]);
             }
 
             this.gantt.unselect_all();
             this.group.classList.toggle('active');
 
             this.show_popup();
+        });
+    }
+
+    setup_click_event() {
+        $.on(this.group, 'click', e => {
+            this.gantt.trigger_event('click', [this.task]);
+            this.gantt.unselect_all();
         });
     }
 

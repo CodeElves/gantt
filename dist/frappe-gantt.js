@@ -536,24 +536,28 @@ class Bar {
 
     bind() {
         if (this.invalid) return;
+        this.setup_popup_event();
         this.setup_click_event();
     }
 
-    setup_click_event() {
-        $.on(this.group, 'focus ' + this.gantt.options.popup_trigger, e => {
+    setup_popup_event() {
+        $.on(this.group, this.gantt.options.popup_trigger, e => {
             if (this.action_completed) {
                 // just finished a move action, wait for a few seconds
                 return;
-            }
-
-            if (e.type === 'click') {
-                this.gantt.trigger_event('click', [this.task]);
             }
 
             this.gantt.unselect_all();
             this.group.classList.toggle('active');
 
             this.show_popup();
+        });
+    }
+
+    setup_click_event() {
+        $.on(this.group, 'click', e => {
+            this.gantt.trigger_event('click', [this.task]);
+            this.gantt.unselect_all();
         });
     }
 
@@ -999,7 +1003,8 @@ class Gantt {
             view_mode: 'Day',
             date_format: 'YYYY-MM-DD',
             popup_trigger: 'click',
-            custom_popup_html: null
+            custom_popup_html: null,
+            is_bar_draggable: true
         };
         this.options = Object.assign({}, default_options, options);
     }
@@ -1369,12 +1374,11 @@ class Gantt {
 
     get_dates_to_draw() {
         let last_date = null;
-        const dates = this.dates.map((date, i) => {
+        return this.dates.map((date, i) => {
             const d = this.get_date_info(date, last_date, i);
             last_date = date;
             return d;
         });
-        return dates;
     }
 
     get_date_info(date, last_date, i) {
@@ -1528,6 +1532,9 @@ class Gantt {
     }
 
     bind_bar_events() {
+        if (!this.options.is_bar_draggable) {
+            return;
+        }
         let is_dragging = false;
         let x_on_start = 0;
         let y_on_start = 0;

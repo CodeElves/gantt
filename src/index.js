@@ -76,7 +76,8 @@ export default class Gantt {
             view_mode: 'Day',
             date_format: 'YYYY-MM-DD',
             popup_trigger: 'click',
-            custom_popup_html: null
+            custom_popup_html: null,
+            is_bar_draggable: true
         };
         this.options = Object.assign({}, default_options, options);
     }
@@ -446,12 +447,11 @@ export default class Gantt {
 
     get_dates_to_draw() {
         let last_date = null;
-        const dates = this.dates.map((date, i) => {
+        return this.dates.map((date, i) => {
             const d = this.get_date_info(date, last_date, i);
             last_date = date;
             return d;
         });
-        return dates;
     }
 
     get_date_info(date, last_date, i) {
@@ -605,6 +605,9 @@ export default class Gantt {
     }
 
     bind_bar_events() {
+        if (!this.options.is_bar_draggable) {
+            return;
+        }
         let is_dragging = false;
         let x_on_start = 0;
         let y_on_start = 0;

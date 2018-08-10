@@ -75,7 +75,7 @@
 				dependencies: 'Task 4',
 				custom_class: 'bar-milestone'
 			},
-		]
+		];
 		var gantt_chart = new Gantt(".gantt-target", tasks, {
 			on_click: function (task) {
 				console.log(task);
@@ -88,7 +88,7 @@
 			},
 			on_view_change: function(mode) {
 				console.log(mode);
-			}
+			},
 		});
 		console.log(gantt_chart);
 	</script>

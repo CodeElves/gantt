@@ -391,14 +391,14 @@ export default class Gantt {
 
     make_grid_highlights() {
         // highlight today's date
-        if (this.view_is('Day')) {
+        if (this.view_is('Day') || this.view_is('Week') || this.view_is('Month')) {
             const x =
                 date_utils.diff(date_utils.today(), this.gantt_start, 'hour') /
                 this.options.step *
                 this.options.column_width;
             const y = 0;
 
-            const width = this.options.column_width;
+            const width = this.view_is('Day') ? this.options.column_width : 1;
             const height =
                 (this.options.bar_height + this.options.padding) *
                     this.tasks.length +
@@ -410,7 +410,7 @@ export default class Gantt {
                 y,
                 width,
                 height,
-                class: 'today-highlight',
+                class: this.view_is('Day') ? 'today-highlight' : 'today-highlight-line',
                 append_to: this.layers.grid
             });
         }

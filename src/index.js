@@ -316,7 +316,7 @@ export default class Gantt {
                 y: row_y,
                 width: row_width,
                 height: row_height,
-                class: 'grid-row',
+                class: 'grid-row ' + task.custom_row_class,
                 append_to: rows_layer
             });
 

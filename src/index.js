@@ -77,7 +77,8 @@ export default class Gantt {
             date_format: 'YYYY-MM-DD',
             popup_trigger: 'click',
             custom_popup_html: null,
-            is_bar_draggable: true
+            is_bar_draggable: true,
+            render_dates: true,
         };
         this.options = Object.assign({}, default_options, options);
     }
@@ -417,6 +418,8 @@ export default class Gantt {
     }
 
     make_dates() {
+        if (!this.options.render_dates) return;
+
         for (let date of this.get_dates_to_draw()) {
             createSVG('text', {
                 x: date.lower_x,

@@ -886,6 +886,40 @@ export default class Gantt {
      */
     clear() {
         this.$svg.innerHTML = '';
+
+        let dfs = document.createElement('defs');
+
+        let pattern = document.createElement('pattern');
+        pattern.setAttribute('id', 'pattern-stripe');
+        pattern.setAttribute('width', '4');
+        pattern.setAttribute('height', '4');
+        pattern.setAttribute('patternUnits', 'userSpaceOnUse');
+        pattern.setAttribute('patternTransform', 'rotate(45)');
+
+
+        let pRect = document.createElement('rect');
+        pRect.setAttribute('width', '3');
+        pRect.setAttribute('height', '4');
+        pRect.setAttribute('transform', 'translate(0,0)');
+        pRect.setAttribute('fill', 'white');
+
+        pattern.appendChild(pRect);
+
+        let mask = document.createElement('mask');
+        mask.setAttribute('id', 'mask-stripe');
+
+        let mRect = document.createElement('rect');
+        mRect.setAttribute('x', '0');
+        mRect.setAttribute('y', '0');
+        mRect.setAttribute('width', '100%');
+        mRect.setAttribute('height', '100%');
+        mRect.setAttribute('fill', 'url(#pattern-stripe)');
+
+        mask.appendChild(mRect);
+        dfs.appendChild(pattern);
+        dfs.appendChild(mask);
+
+        this.$svg.innerHTML = '<defs>' + dfs.innerHTML + '</defs>';
     }
 }
 
